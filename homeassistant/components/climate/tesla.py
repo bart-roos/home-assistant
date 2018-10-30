@@ -89,11 +89,13 @@ class TeslaThermostat(TeslaDevice, ClimateDevice):
         _LOGGER.debug("Setting temperature for: %s", self._name)
         temperature = kwargs.get(ATTR_TEMPERATURE)
         if temperature:
+            self.tesla_device._controller.wake_up(self.tesla_device._id)
             self.tesla_device.set_temperature(temperature)
 
     def set_operation_mode(self, operation_mode):
         """Set HVAC mode (auto, cool, heat, off)."""
         _LOGGER.debug("Setting mode for: %s", self._name)
+        self.tesla_device._controller.wake_up(self.tesla_device._id)
         if operation_mode == OPERATION_LIST[1]:  # off
             self.tesla_device.set_status(False)
         elif operation_mode == OPERATION_LIST[0]:  # heat
